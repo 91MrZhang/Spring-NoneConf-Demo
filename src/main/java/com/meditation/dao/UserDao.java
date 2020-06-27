@@ -11,7 +11,7 @@ import com.meditation.dao.entity.User;
 @Mapper
 public interface UserDao {
 
-	public List<User> getUsers();
-	
-	public User getUser(@Param("userId")String userId);
+    List<User> getUsers();
+
+    User getUser(@Param("userId") String userId);
 }

@@ -24,76 +24,74 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.meditation.interceptor.PermissionInterceptor;
 
 /**
- * <b>SpringMVC</b>
- * 
- * @author: zhangyuting <br>
- * @date: 2019-11-27 <br>
+ * SpringMVC
+ *
+ * @author zhangyuting
  */
 @Configuration
 @ComponentScan("com.meditation.*")
 @EnableWebMvc
 public class SpringMVC extends WebMvcConfigurerAdapter {
 
-	/**
-	 * 配置jsp前后缀
-	 *
-	 * @param registry
-	 */
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
-		registry.jsp("/WEB-INF/view/", ".jsp");
-	}
+    /**
+     * 配置jsp前后缀
+     *
+     * @param registry registry
+     */
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.jsp("/WEB-INF/view/", ".jsp");
+    }
 
-	/**
-	 * 配置静态文件加载规则
-	 *
-	 * @param registry
-	 */
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/dist/**").addResourceLocations("/dist/");
-		registry.addResourceHandler("/upload/**").addResourceLocations("/upload/");
-	}
+    /**
+     * 配置静态文件加载规则
+     *
+     * @param registry registry
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/dist/**").addResourceLocations("/dist/");
+        registry.addResourceHandler("/upload/**").addResourceLocations("/upload/");
+    }
 
-	/**
-	 * 配置json消息转化器，基于Fastjson
-	 *
-	 * @param converters
-	 */
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
-		List<MediaType> supportedMediaTypes = new ArrayList<MediaType>();
-		supportedMediaTypes.add(MediaType.TEXT_HTML);
-		converter.setSupportedMediaTypes(supportedMediaTypes);
-		converter.setDefaultCharset(Charset.forName("utf-8"));
-		converters.add(converter);
-	}
+    /**
+     * 配置json消息转化器，基于Fastjson
+     *
+     * @param converters converters
+     */
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
+        List<MediaType> supportedMediaTypes = new ArrayList<MediaType>();
+        supportedMediaTypes.add(MediaType.TEXT_HTML);
+        converter.setSupportedMediaTypes(supportedMediaTypes);
+        converter.setDefaultCharset(Charset.forName("utf-8"));
+        converters.add(converter);
+    }
 
-	/**
-	 * 配置multipartResolver
-	 *
-	 */
-	@Bean("multipartResolver")
-	public CommonsMultipartResolver multipartResolver(@Value("#{systemProperties['webapp.root']}") String webRoot) throws IOException {
-		String uploadTmpPath = SpringMVC.class.getResource("/uploadtmp").getPath();
-		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-		resolver.setMaxUploadSize(1024 * 1024 * 1024);
-		resolver.setMaxUploadSizePerFile(1024 * 1024 * 1024);
-		resolver.setMaxInMemorySize(1024 * 1024 * 1024);
-		resolver.setUploadTempDir((new FileSystemResource(uploadTmpPath)));
-		resolver.setDefaultEncoding("utf-8");
-		return resolver;
-	}
-	
-	
-	/**
-	 * 配置拦截器
-	 *
-	 * @param registry
-	 */
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new PermissionInterceptor()).addPathPatterns("/course/**");
-	}
+    /**
+     * 配置multipartResolver
+     */
+    @Bean("multipartResolver")
+    public CommonsMultipartResolver multipartResolver(@Value("#{systemProperties['webapp.root']}") String webRoot) throws IOException {
+        String uploadTmpPath = SpringMVC.class.getResource("/uploadtmp").getPath();
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSize(1024 * 1024 * 1024);
+        resolver.setMaxUploadSizePerFile(1024 * 1024 * 1024);
+        resolver.setMaxInMemorySize(1024 * 1024 * 1024);
+        resolver.setUploadTempDir((new FileSystemResource(uploadTmpPath)));
+        resolver.setDefaultEncoding("utf-8");
+        return resolver;
+    }
+
+
+    /**
+     * 配置拦截器
+     *
+     * @param registry registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new PermissionInterceptor()).addPathPatterns("/course/**");
+    }
 }
