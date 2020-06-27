@@ -1,12 +1,14 @@
 # Spring-NoneConf-Demo
-小型springboot，几乎取消了xml配置文件，都在代码里配置
+## SpringMVC的注解版
+
+### 为什么搞这么一处呢？
+因为熟悉了SpringBoot这种约定大于配置的模式之后，再用XML启动一个SpringMVC的项目，就有点逼迫强迫症了。
 
 
-一些老项目使用的tomcat,jdk版本较老，都是单个tomcat封装了一层，带多个webapp
+而我在的项目中，Tomcat对catalina.policy限制的比较严格，如果想把SpringBoot项目打成war包,需要Tomcat开设很高的反射权限，很明显这是很麻烦的。
 
+所以就有了这个小脚手架
 
-我这个除了log没做之外，基本上都有了，hibernate自动建表，mybatis实现业务增删改查
+1、它集成了Hibernate、Mybatis，可以用Hibernate自己建表，用Mybatis自定义业务查询；总之就是比较现代化了。
 
-为什么多次一举，不直接用Spingboot呢?
-
-实际上我参加的这个项目tomcat对catalina.policy限制的很严格，Springboot的项目要想成功部署，需要很高的java权限，所以折中了这个办法
+2、这个主要是实现了一下ServletContainerInitializer接口，才能加载时启动，不过也得Servlet3.0才能启动。如果比这个低，还是得写web.xml。
