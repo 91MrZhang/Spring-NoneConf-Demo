@@ -1,4 +1,4 @@
-# Spring-NoneConf-Demo
+# spring-nxml-template
 ## SpringMVC的注解版
 
 ### 为什么搞这么一处呢？
